@@ -1,0 +1,59 @@
+# Preface
+- people who code for money, dont know the history of coding
+- like pop culture they dislike the history
+- buzz words in server side and BE systems for storage and processing 
+    - big data, acid, cap, sharding
+    - nosql, web scale, eventual consistency, cloud, map reduce, realtime
+- internet companies handle huge traffic and data, forcing them to develop new tools for such scale
+    - agile, test hypothesis, and dve cycle must be short
+    - free and open s/w are now prefered
+    - cpu clock speeds are stagnant 
+    - but multi core processes are std
+    - n/w are getting faster, : || must increase
+- easy to create distributed across machines and regions using IAAS
+- high available is in demand
+- dia : if data is the challenge
+    - quantity, complexity and speed of change
+    - not compute intensive where cpus are the bottle neck
+- new dbs : no sql are getting attention
+    - but queues, cache,search index, for batch and stream process are imp too
+- s/w eng and archit. must have knowledge of tech and trade offs for the optimum solution
+- behind the tech, there are princicples that remain true : need to understand those, and find a good fit and avoid pit falls
+- goal : navigate landscape for processing and storage of data
+- popular application system design discussed
+    - understand the principles and trade off
+    - how why and what questions to ask
+    - which tech is apt where : pros cons
+    - and how to combine them for best solution
+    - make good design decisions
+- books for : server and backend for storage or processing or web applciation
+- n/w ing, web app dev exp with sql experience
+- scalable for Ms of user, highly available, opertionaly robust, easy to maintain in the long term with changes in req and growth
+    - waste of time : building for scale you dont need
+    - choose the right tools : sql not the only option
+- breaks down : internal of dbs and data processing system
+- Scope :
+    - doesn have installation guide
+    - principles and trade off fundamental to data systems
+    - design decision of products
+    - arhcitecture of data system and integration
+    - deployment sec and mgmt are not in this book
+    - mostly dealing with "big data" related tools
+    - make things clear using the right terms
+    - biased towards os and free s/w
+- Outine:
+    - part 1 : fundamental ideas of data intensive applications
+        - chapter 1 : reliability scaling and maintaining, how to think about them
+        - chapter 2 : compare data models and query languaes
+        - chapter 3 : how dbs work
+        - chapter 4 : data encoding, serialization and schemas
+    - part 2 : distributed data
+        - chapter 5 : replication
+        - chapter 6 : partition and sharding
+        - chapter 7 : transaction
+        - chapter 8 : problems of distributed system
+        - chapter 9 : consistency and consensus in dist. system
+    - part 3 : derived data, heterogeneous system
+        - chapter 10 : batch processing, 
+        - chapter 11 : stream
+        - chapter 12 : combine them all 
