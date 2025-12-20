@@ -105,3 +105,111 @@
             - detailed and clear monitoring factors perf metrics and error rate
                 - telemetry
         - good mgmt and training (not in focus here)
+
+### Importance of reliability
+- bugs in business operations can lead ot productivity loss and legal ramifications
+- outages can damage reputation and bottom line
+- trade off : reliability vs production cost
+    - inscase of testing new prod for market research etc
+
+## Scalability
+- todays system might not work in the future because of load or demand
+- systems ability to cope with load
+    - not one dimensional 
+    - its in respect with something that will sound like
+        - if this increases, how will the system grow and how to add resources to it
+        - and this can be anythign depending on the situation
+### Load
+- Only when we know what laod is we can think of how it will grow
+- use number : load parameters
+    - depend on the archi of the system, can be
+    - req/sec to a webserver
+    - ratio of reads to writes to a db
+    - number of concurrant users on system
+    - hit rate on cache
+- it can be all it can be one and it can be badly impacting just a few, need to figure it out as per the applciaiton
+
+#### example : twitter (2012)
+- posting : 4.6kreq/sec on avg, and 12kreq/sec on peak
+- view home timeline : 3kreq/sec
+- seems easy but the problem was not the req/sec but fan out
+    ```
+    FANOUT
+    # of req that needs to be done to other system to serve the incoming req
+    ```
+    - each user follows many and each user is followed by many
+- Two ways of solving this
+    1. when a new post is received, store it in one big db and then when people ask for others tweet, fetch it from all the followed ones and show
+    2. when a new one is received, store it as well as put in caches of all the followers, which will reduce the latency
+        - also, since the tweets are right there it does need to look up in the huge db
+- 1 struggles as they grew and they had to move to approach 2
+    - because avg rate of new posts is 2x lesser than asking for others tweet in homepage
+    - so here doing more work at write is better than at read
+- 2 has a problem too
+    - writting new tweet is a lot, given each user has 75 followers
+    - so 4.6k tweets/sec = 345k writes/sec to the home timeline caches
+    - also there is no guarantee that the followers are distributed equally and the how freq are the peaks
+    - avg does show the distribution so if something has followers in millions, they will become a bottle neck
+- distrubition of followers/user is now also a key load paramter, weighted by how often those users tweet
+    - didnot see that coming
+- this is the part of fan out load
+- As of now they use hybrid abse don user
+    - most of the users are treated one way (#2)
+    - while the ones that are having a lot of follower are treated in a different way (#1)
+- more in chapter 12
+
+
+### Performance
+- when the clearly defined load parameters increases, what happens as a consequence of that also increases
+- two ways
+    1. increase load parameters and see the system resources : cpu, memory, n/w bandwidth constant - how does the performance of the system get affected
+    2. how much does increases load paramters need system resources changed, to maintain the current level of performance
+- performance numbers examples
+    - batch processing 
+        - throughput : # of records that can be processed/sec
+        - total time taken : on a job of processing a dataset of a certain size
+    - realtime
+        - service response time :  time between user sending a req and receiving a response (felt by the client)
+            - processing time + n/w delays + queueing delays
+            - can vary for the same request , as it depends on multiple things
+                - context switch of bg process
+                - loss of n/w package and tcp retrainsmissioon
+                - garbage collection pause
+                - page fault , then suing to read from disk
+                - mechanical issue in server rack (vibration)
+                - etc etc
+            - it is not one number but a distribution of values that can be measured
+            - most of the request will be fast but some outliers might be there
+                - may be they are expensive ex : data heavy
+            - avg response time is not that infromative
+                - usually an arithmetic mean (not a good one)
+                    - as it doesn say how many users got huge delays
+            - so use percentiles, by sorting the time taken and then show a box plot or p99
+                - use median (p50)
+            - to find out how bad the outliers are look for higher percentiles like p95, p99 and p999 (99.9)
+                - these will give tail latency
+                - affects ux a lot
+                - ex : Amazon talks in p999, i.e performance is bad even if 1 in 1000 req exp delay
+                    - as they process a lot of data and purchase a lot and most valuable
+                    - they have noticed, an increase in 100ms response time reduces sales by 1%
+                    - 1s delaye reduces customer rating by 16%
+                    - optimizing p9999 (1 in 10k req)  was to expensive and not worth the effort on profit
+            - at very high percentiles , random events can affect and are difficult to control
+                - benifits diminish
+            - SLO and SLA (service level aggreement and objective)
+                - contracts defines the availability and performance of a system
+                - Example : if the response time is 200ms the service is up and p99 at 1 sec
+                    - service must be up 99.9% of the time
+                    - else refund
+                    - queueing delays is usually the culprit as server can only do so much
+                      ```
+                      HEAD OF LINE BLOCKING
+                      since server can processes only so much in ||
+                      limited by cpu cores
+                      a few slow request can hold up the entire queue
+                      even if the down the line req are fast to process the big once will block the road for them
+                      ```
+            - so measure the response time in the client side and see how they feel
+            - to test aftrifical load, the client must keep sending heavy request irrespective of the response time
+            - 
+        - latency : is duration the request is waiting to be handelled,  it remains latent waiting to be processed
