@@ -7,7 +7,7 @@
     - hard to combine tools 
 - explore principle and practicality in this chapter
 
-## Thinking about data systems
+## 1. Thinking about data systems
 - DB, qs, cache are not that different but are different in perfromance characteristics and implementations
 - each tool was created to optimize for a particular case
 - a data store can also be sued as message qs : redis
@@ -29,7 +29,7 @@
     2. scaling : volume and complexity shouldn affect
     3. maintainig : over time, different people will work, they must be able to work on it productively
 
-## Reliability
+## 2. Reliability
 - In context of s/w
     - app perfroms expected function
     - tolerate user errors and not cause mistakes
@@ -112,7 +112,7 @@
 - trade off : reliability vs production cost
     - inscase of testing new prod for market research etc
 
-## Scalability
+## 3. Scalability
 - todays system might not work in the future because of load or demand
 - systems ability to cope with load
     - not one dimensional 
@@ -211,5 +211,41 @@
                       ```
             - so measure the response time in the client side and see how they feel
             - to test aftrifical load, the client must keep sending heavy request irrespective of the response time
-            - 
         - latency : is duration the request is waiting to be handelled,  it remains latent waiting to be processed
+
+#### Percentile in practice
+```
+TAIL LATENCY AMPLIFICATION
+- one slow call is enough to make the entire ux bad
+- even if small % of BE calls are slow, the prob of getting more slwo call increases if the user's request requires multile BE calls
+- so making more request being slow
+```
+- To add response time percentile in a dashabord, it should be calculated on an ongoing basis
+- rolling window of 10 mins , calculate median and various percentile and show in graph
+- no a good way : to keep a per min sorted list of all resposne time in a given time window
+- algorithms : forward decay, t digest, hdr historgram
+
+#### Approaches to coping with load
+- Architcture thats okay for x load will not work for 10x, needs to be remade
+- vertical vs horizontal (shared nothing, scaling out)
+- it can be an hybrid
+- Scaling can be automatic : elastic, adds systems as the laod increases automatically (when thinsg are unpredictable)
+- when a state is share dbetween multile systems (horizontal), there can be additional complexity
+    - need to check ease of use and maintainability
+- no magic scaling sauce - no std architrecture, depends on:
+    - read, writes, data to store, complixity of data, resposne time, access patterns, or combination of these and more 
+
+
+## 4. Maintainability
+- major cost of a s/w is not in the development but in the maintence
+    - fixing bug, keeping it operational, investigating failuers, adpating to new platforms
+    - modifying for new use cases
+    - adding new features
+    - repaying technical debt
+- ppl dislike : fixing someones bugs, outdated platforms, working on systems that were not built for something but are forced to
+- no general advise to maintain legacy system
+- making them properly is the key using design principles
+    1. operability : making things easy fo ops team
+    2. simplicity : for new folks to understand the system
+    3. evolvability : so that new thinsg can be added easily later (modifiability, extensibility, plasticity)
+    
