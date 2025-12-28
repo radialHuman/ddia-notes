@@ -248,4 +248,6 @@ TAIL LATENCY AMPLIFICATION
     1. operability : making things easy fo ops team
     2. simplicity : for new folks to understand the system
     3. evolvability : so that new thinsg can be added easily later (modifiability, extensibility, plasticity)
-    
+
+### Operability SKIPPED
+## Summary
