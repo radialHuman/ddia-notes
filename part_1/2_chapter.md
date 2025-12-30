@@ -75,4 +75,42 @@ NORMALIZATION in DBs
 - This problem was applicable even in the IMS by IBM which was a hierarchical data modelling
 
 ## The network model
-- 
+- Standardized by a committe CODASYL 
+- generalization of hierarchical model : every node had one parent
+- every node can have multiple parent
+- allowed many to many and one to many relations. Instead of primary key it used pointers to make relations
+- Things were accessed by access path, simplest form : traversal of linked list
+- In case of many to many, there can be a lot of paths, like navigating in n dimensional space
+- The code to update and write in db was complicated and inflexible
+    - without the path to data its difficult
+
+
+## Relational model
+- No nested structures, no access path, just open tuples of collections
+- read all rows, use arbtrary conditions, filters, insert
+- query optimizer : decides which part of the query to execute in what order
+    - automatic, not by the appication developer
+    - build after a lot of r&d, quite complicated
+- easier to add new feature
+
+## Dcoument db
+- like hierarchy
+- n:n and 1:n using foreign key
+- join or follow up queries
+- Flexible schema, better performance and matches the applciation data (json, dict)
+    - schema on read (dynamic)
+- Cons
+    - cant refer to nest items inside the document
+    - first.second.third type only
+- no joins might be an issue if applciation is designed differently
+- not suitable for n:n 
+- joins needs to be inside applicaiton, can slow down performance
+- huge documents have all required info in on locality
+    - googles spanner db is relational but had localality like properties
+    - orcels : clusters
+- many relationla dbs have xml handlelling ability
+- postgres, mysql and ibm db2 support json
+- hybrid is good
+- query language 
+    - sql : relational algebra (declaritive), parallel execution
+    - document : imperative, cant parallalize
