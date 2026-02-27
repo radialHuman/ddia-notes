@@ -114,3 +114,8 @@ NORMALIZATION in DBs
 - query language 
     - sql : relational algebra (declaritive), parallel execution
     - document : imperative, cant parallalize
+
+### Mapreduce queries
+- large amount of read data across devices
+- used in mongodb too, neither declaritive or imperitive
+- 
