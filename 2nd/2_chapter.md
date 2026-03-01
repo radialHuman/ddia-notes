@@ -82,3 +82,5 @@
 - operability : life managaeable for the operations team, visibility or metrics, proper logs
 - simplicity : accidental complexity needs to be avoided, variable names, sphagetti code, random tech in codebase for no reason, abstraction
 - evalability : ability to change systems later, agile principles, business laws, privacy laws change so adpat. maleable
+
+- CHaos engineering : by netflix, turns of prod servers during the day, to see whats breaking and cascading effect. if architecture done properly, this shouldn scare you. Healing must be built in 
